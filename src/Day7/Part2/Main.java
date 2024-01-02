@@ -1,11 +1,14 @@
-package Day7.Part1;
+package Day7.Part2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,28 +22,6 @@ public class Main {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-//        Comparator<String[]> strengthOrder = (String[] o1, String[] o2) -> {
-//            Character[] strengths = {'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
-//
-//            System.out.println("Hand 1: " + o1[0]);
-//            System.out.println("Hand 2: " + o2[0]);
-//            for (int i = 0; i < o1[0].length(); i++) {
-//                int valueOne = Arrays.asList(strengths).indexOf(o1[0].charAt(i));
-//                int valueTwo = Arrays.asList(strengths).indexOf(o2[0].charAt(i));
-//                if (valueOne < valueTwo) {
-//                    System.out.println(o1[0].charAt(i) + "<" + o2[0].charAt(i));
-//                    return 1;
-//                }
-//                if (valueOne > valueTwo) {
-//                    System.out.println("Return -1");
-//                    return -1;
-//                }
-//
-//
-//            }
-//            System.out.println("Return 0");
-//            return 0;
-//        };
         ArrayList<Hand> fiveOfAKinds = new ArrayList<>();
         ArrayList<Hand> fourOfAKinds = new ArrayList<>();
         ArrayList<Hand> fullHouses = new ArrayList<>();
@@ -95,10 +76,9 @@ public class Main {
         finalList.addAll(fiveOfAKinds);
         long result = 0;
         for (Hand hand : finalList) {
-            System.out.println(hand);
             result += (long) (finalList.indexOf(hand) + 1) * hand.bid;
         }
-        System.out.println(result);
+        System.out.println("Result: " + result);
     }
 
     public static String getType(String hand) {
@@ -145,107 +125,112 @@ public class Main {
                 cardCount.add(count);
             }
         }
-        if(counted.contains("j")){
-            int numOfJ = cardCount.get(counted.indexOf("J"));
-            if(!counted.get(cardCount.indexOf(Collections.max(cardCount))).equals("J")){
-                cardCount.remove(counted.indexOf("J"));
-                int maxCard = cardCount.get(cardCount.indexOf(Collections.max(cardCount)));
-                cardCount.set(cardCount.indexOf(Collections.max(cardCount)), maxCard+numOfJ);
+        System.out.println(Arrays.toString(chars));
+        System.out.println(cardCount);
+            if (counted.contains("J")) {
+                int numOfJ = cardCount.get(counted.indexOf("J"));
+                if (!counted.get(cardCount.indexOf(Collections.max(cardCount))).equals("J")) {
+                    cardCount.remove(counted.indexOf("J"));
+                    int maxCard = cardCount.get(cardCount.indexOf(Collections.max(cardCount)));
+                    cardCount.set(cardCount.indexOf(Collections.max(cardCount)), maxCard + numOfJ);
+                }
             }
-        }
-        return cardCount;
-    }
-
-
-    public static boolean isFiveOfAKind(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 1;
-    }
-
-    public static boolean isFourOfAKind(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 2 && Collections.max(cardCount) == 4;
-    }
-
-    public static boolean isFullHouse(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 2 && Collections.max(cardCount) == 3;
-    }
-
-    public static boolean isThreeOfAKind(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 3 && Collections.max(cardCount) == 3;
-    }
-
-    public static boolean isTwoPair(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 3 && Collections.max(cardCount) == 2;
-    }
-
-    public static boolean isOnePair(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 4 && Collections.max(cardCount) == 2;
-    }
-
-    public static boolean isHighCard(ArrayList<Integer> cardCount) {
-        return cardCount.size() == 5;
-    }
-
-    public static void printList(ArrayList<String[]> cardType, String type) {
-        System.out.println(type + " " + cardType.size());
-        for (String[] card : cardType) {
-            System.out.println(card[0] + ", " + card[1]);
+        System.out.println(cardCount);
+            return cardCount;
         }
 
-    }
 
-    public static class strengthComp implements Comparator<Hand> {
 
-        @Override
-        public int compare(Hand o1, Hand o2) {
-            ArrayList<Character> strengths = new ArrayList<>();
-            strengths.add('A');
-            strengths.add('K');
-            strengths.add('Q');
-            strengths.add('J');
-            strengths.add('T');
-            strengths.add('9');
-            strengths.add('8');
-            strengths.add('7');
-            strengths.add('6');
-            strengths.add('5');
-            strengths.add('4');
-            strengths.add('3');
-            strengths.add('2');
-            System.out.println("Hand 1: " + o1.cards);
-            System.out.println("Hand 2: " +o2.cards);
-            for (int i = 0; i < o1.cards.length(); i++) {
-                int valueOne = strengths.indexOf(o1.cards.charAt(i));
-                int valueTwo = strengths.indexOf(o2.cards.charAt(i));
-                if(valueOne == valueTwo){
-                    continue;
+            public static boolean isFiveOfAKind (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 1;
+            }
+
+            public static boolean isFourOfAKind (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 2 && Collections.max(cardCount) == 4;
+            }
+
+            public static boolean isFullHouse (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 2 && Collections.max(cardCount) == 3;
+            }
+
+            public static boolean isThreeOfAKind (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 3 && Collections.max(cardCount) == 3;
+            }
+
+            public static boolean isTwoPair (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 3 && Collections.max(cardCount) == 2;
+            }
+
+            public static boolean isOnePair (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 4 && Collections.max(cardCount) == 2;
+            }
+
+            public static boolean isHighCard (ArrayList < Integer > cardCount) {
+                return cardCount.size() == 5;
+            }
+
+            public static void printList (ArrayList < String[]>cardType, String type){
+                System.out.println(type + " " + cardType.size());
+                for (String[] card : cardType) {
+                    System.out.println(card[0] + ", " + card[1]);
                 }
-                if (valueOne < valueTwo) {
-                    System.out.println(o1.cards.charAt(i) + "<" + o2.cards.charAt(i));
-                    return 1;
-                }
-                System.out.println("Return -1");
-                return -1;
-
 
             }
-            System.out.println("Return 0");
-            return 0;
+
+            public static class strengthComp implements Comparator<Hand> {
+
+                @Override
+                public int compare(Hand o1, Hand o2) {
+                    ArrayList<Character> strengths = new ArrayList<>();
+                    strengths.add('A');
+                    strengths.add('K');
+                    strengths.add('Q');
+                    strengths.add('T');
+                    strengths.add('9');
+                    strengths.add('8');
+                    strengths.add('7');
+                    strengths.add('6');
+                    strengths.add('5');
+                    strengths.add('4');
+                    strengths.add('3');
+                    strengths.add('2');
+                    strengths.add('J');
+
+                    System.out.println("Hand 1: " + o1.cards);
+                    System.out.println("Hand 2: " + o2.cards);
+                    for (int i = 0; i < o1.cards.length(); i++) {
+                        int valueOne = strengths.indexOf(o1.cards.charAt(i));
+                        int valueTwo = strengths.indexOf(o2.cards.charAt(i));
+                        if (valueOne == valueTwo) {
+                            continue;
+                        }
+                        if (valueOne < valueTwo) {
+                            System.out.println(o1.cards.charAt(i) + "<" + o2.cards.charAt(i));
+                            return 1;
+                        }
+                        System.out.println("Return -1");
+                        return -1;
+
+
+                    }
+                    System.out.println("Return 0");
+                    return 0;
+                }
+
+                ;
+            }
+            public record Hand(String cards, int bid) implements Comparable<Hand> {
+
+
+                @Override
+                public int compareTo(Hand o) {
+
+                    return 0;
+                }
+            }
+
+
         }
-
-        ;
-    }
-    public record Hand(String cards, int bid) implements Comparable<Hand>{
-
-
-        @Override
-        public int compareTo(Hand o) {
-
-            return 0;
-        }
-    }
-
-
-}
 
 
 

@@ -1,13 +1,19 @@
-package Day2;
+package Day2.Part1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
+/* DESCRIPTION
+Finds the sum of the game IDs of valid games
+
+1. For each row, separates the count of each cube type for
+2. Checks each cube type if the count is over the maximum
+3. If the count is over the max, the game is invalid, else the game ID is added to the final sum
+
+ */
 public class Main {
     public static void main(String[] args) {
         Path textFile = Paths.get("./src/Day2/input.txt");
@@ -18,19 +24,15 @@ public class Main {
                 boolean valid = true; // valid game
                 int colon = currentLine.indexOf(":");
                 String gameNumber = currentLine.substring(5, colon);
-                System.out.println("GAME NUM: " + gameNumber);
                 String[] sets = currentLine.substring(colon + 2).split("; ");
 
                 for (String set : sets) {
                     int redCount = 0;
                     int blueCount = 0;
                     int greenCount = 0;
-                    System.out.println("Set: " + set);
-                    String[] marbleType = set.split(", ");
-                    for (String marble : marbleType) {
-                        String[] detail = marble.split(" ");
-                        System.out.println(detail[1]);
-                        System.out.println(detail[0]);
+                    String[] cubeType = set.split(", ");
+                    for (String cube : cubeType) {
+                        String[] detail = cube.split(" ");
                         switch (detail[1]) {
                             case "red" -> redCount += Integer.parseInt(detail[0]);
                             case "green" -> greenCount += Integer.parseInt(detail[0]);
@@ -39,7 +41,6 @@ public class Main {
                         if (redCount > 12 || blueCount > 14 || greenCount > 13) {
                             valid = false;
                         }
-                        System.out.println("Red: " + redCount + ", Green: " + greenCount + ", Blue: " + blueCount);
 
 
                     }
@@ -49,7 +50,7 @@ public class Main {
                     result += Integer.parseInt(gameNumber);
                 }
             }
-            System.out.println(result);
+            System.out.println("Result: " + result);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();

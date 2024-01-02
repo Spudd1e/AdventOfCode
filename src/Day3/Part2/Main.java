@@ -1,4 +1,4 @@
-package Day3.Part1;
+package Day3.Part2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/*  DESCRIPTION
+Finds symbols where there are exactly 2 numbers adjacent, and adds the product of the 2 numbers to the total sum
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -16,14 +19,10 @@ public class Main {
             int sum = 0;
             String l;
             ArrayList<String> lines = new ArrayList<>();
-
             while ((l = br.readLine()) != null) {
                 lines.add(l);
             }
             for(int i =0; i < lines.size(); i ++) {
-                System.out.println("Line num: " + (i+1));
-
-
                 String currentLine = lines.get(i);
                 String prevLine = "";
                 String nextLine = "";
@@ -33,27 +32,19 @@ public class Main {
                     nextLine = lines.get(i + 1);
 
                 String[] lineList = {prevLine, currentLine, nextLine};
-
-
-
                 ArrayList<Integer> indexes = getIndexes(currentLine);
-                ArrayList<Integer> results = new ArrayList<>();
-                for(String s : lineList){
-                    System.out.println(s);
-                }
                 for (int index : indexes) {
-                    //System.out.println(currentLine.charAt(index));
+                    ArrayList<Integer> gearParts = new ArrayList<>();
                     for (String s : lineList) {
                         Integer[] lineRes = getNumbers(s, index);
-                        for (int num : lineRes) {
-                            results.add(num);
-                            sum += num;
-                        }
+                        gearParts.addAll(Arrays.asList(lineRes));
+                    }
+                    if(gearParts.size() == 2){
+                        sum += gearParts.get(0) * gearParts.get(1);
                     }
                 }
-                System.out.println("Results: " + results);
             }
-            System.out.println(sum);
+            System.out.println("Result: " + sum);
 
 
         } catch (
@@ -61,8 +52,6 @@ public class Main {
             ioe.printStackTrace();
         }
     }
-
-
     public static ArrayList<Integer> getIndexes(String line) {
         ArrayList<Integer> results = new ArrayList<>();
         for (int i = 0; i < line.length(); i++) {
@@ -72,7 +61,6 @@ public class Main {
         }
         return results;
     }
-
     public static Integer[] getNumbers(String line, int index) {
         if (line.isEmpty()) {
             return new Integer[0];
@@ -81,25 +69,23 @@ public class Main {
 
         int[] surrounding = {index - 1, index, index + 1};
         for (int num : surrounding) {
-            //System.out.print(line.charAt(num));
             if (Character.isDigit(line.charAt(num))) {
-                int dex = num;
+                int pointer = num;
 
-                while ( dex > -1 &&  Character.isDigit(line.charAt(dex))) {
-                    dex--;
+                while ( pointer > -1 &&  Character.isDigit(line.charAt(pointer))) {
+                    pointer--;
                 }
-                dex++;
+                pointer++;
                 StringBuilder sb = new StringBuilder();
 
-                while (dex < line.length() && Character.isDigit(line.charAt(dex))) {
-                    sb.append(line.charAt(dex));
-                    dex++;
+                while (pointer < line.length() && Character.isDigit(line.charAt(pointer))) {
+                    sb.append(line.charAt(pointer));
+                    pointer++;
                 }
                 if (!sb.toString().isEmpty())
                     results.add(Integer.parseInt(sb.toString()));
             }
         }
-        //System.out.println();
 
         ArrayList<Integer> endResults = new ArrayList<>();
         if (Character.isDigit(line.charAt(index))) {
@@ -111,7 +97,6 @@ public class Main {
         } else {
             endResults = results;
         }
-
 
         return endResults.toArray(new Integer[0]);
     }

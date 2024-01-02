@@ -1,17 +1,24 @@
-package day1part1;
+package Day1.Part1;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
+/*  DESCRIPTION
+1. Takes first and last digit from a line
+2. Forms 2 digit number with the digits
+3. Adds 2 digit number to sum
+4. Outputs the sum of all the 2 digit numbers
+ */
+
+
 public class Main {
     public static void main(String[] args) {
         int sumOfResult = 0;
-            Path textFile = Paths.get("./src/day1part1/day1.txt");
+            Path textFile = Paths.get("./src/Day1/input.txt");
             try(BufferedReader br = Files.newBufferedReader(textFile)){
                 String currentLine = "";
                 while((currentLine = br.readLine()) != null) {
@@ -31,6 +38,6 @@ public class Main {
         catch(IOException ioe){
             ioe.printStackTrace();
         }
-            System.out.println(sumOfResult);
+            System.out.println("Result: " + sumOfResult);
     }
 }
