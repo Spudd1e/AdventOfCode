@@ -33,6 +33,7 @@ public class Main {
             String currentElement = "AAA";
             while(!currentElement.equals("ZZZ")){
                 for(String instruction : instructions){
+                    System.out.println(currentElement);
                     steps ++;
                     if(instruction.equals("L")){
                         currentElement = nodes.get(elements.indexOf(currentElement)).left;
@@ -41,6 +42,7 @@ public class Main {
                         currentElement = nodes.get(elements.indexOf(currentElement)).right;
                     }
                 }
+                System.out.println(currentElement);
             }
             System.out.println(steps);
 

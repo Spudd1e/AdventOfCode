@@ -2,6 +2,7 @@ package Day8.Part2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,43 +33,59 @@ public class Main {
                 String right = currentLine.substring(12, 15);
                 nodes.add(new Node(element, left, right));
             }
-            System.out.println(trackedElements);
-            int steps = 0;
-            boolean endingInZ = false;
-
-            while (!endingInZ) {
-                for (String instruction : instructions) {
-                    steps++;
-                    for (int i = 0; i < trackedElements.size(); i++) {
-                        if (instruction.equals("L"))
-                            trackedElements.set(i, nodes.get(elements.indexOf(trackedElements.get(i))).left);
+            ArrayList<Long> stepCounts = new ArrayList<>();
+            for (String element : trackedElements) {
+                long steps = 0;
+                String currentElement = element;
+                boolean stop = false;
+                while (!stop) {
+                    for (String instruction : instructions) {
+                        assert currentElement != null;
+                        if (currentElement.charAt(2) == 'Z') {
+                            System.out.println(currentElement);
+                            stop = true;
+                        }
+                        if (instruction.equals("L")) {
+                            currentElement = nodes.get(elements.indexOf(currentElement)).left;
+                        }
                         if (instruction.equals("R")) {
-                            trackedElements.set(i, nodes.get(elements.indexOf(trackedElements.get(i))).right);
+                            currentElement = nodes.get(elements.indexOf(currentElement)).right;
                         }
-                    }
-                }
-                int zCount = 0;
-                if (trackedElements.get(0).charAt(2) == 'Z')
-                    for (String e : trackedElements) {
-                        if (e.charAt(2) == 'Z') {
-                            zCount++;
-                            System.out.println("Containing z: " + zCount);
-                        }
-                    }
-                if (zCount == trackedElements.size()) {
-                    endingInZ = true;
-                }
 
+                        steps++;
+                    }
+                }
+                stepCounts.add(steps);
             }
-            System.out.println(steps);
-
-
+            long max = stepCounts.get(0);
+            System.out.println(max);
+            for(long stepCount: stepCounts){
+                if(stepCount > max){
+                    max = stepCount;
+                }
+            }
+            long lcm = max;
+            while(!lowestCommonMultiple(stepCounts, lcm)) {
+                lcm += max;
+            }
+            System.out.println(stepCounts);
+            System.out.println(lcm);
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
     public record Node(String element, String left, String right) {
+    }
+    public static boolean lowestCommonMultiple(ArrayList<Long> stepList, long lcm){
+        boolean isLcm = true;
+        for(long step : stepList){
+            if (lcm % step != 0) {
+                isLcm = false;
+                break;
+            }
+        }
+    return isLcm;
     }
 
 }
